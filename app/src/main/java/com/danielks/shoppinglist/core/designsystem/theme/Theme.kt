@@ -1,4 +1,4 @@
-package com.danielks.shoppinglist.ui.theme
+package com.danielks.shoppinglist.core.designsystem.theme
 
 import android.app.Activity
 import android.os.Build
