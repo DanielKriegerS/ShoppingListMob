@@ -14,15 +14,12 @@ import com.danielks.shoppinglist.preview.PreviewData
 @Composable
 fun FinalizedListsScreen(
     onBack: () -> Unit,
-    onOpenList: (String) -> Unit
+    onOpenList: (String) -> Unit,
+    modifier: Modifier
 ) {
     val data = listOf(PreviewData.finalized1)
-
-    Scaffold(
-        topBar = { AppTopBar(title = "Listas Finalizadas", showBack = true, onBack = onBack) }
-    ) { padding ->
-        LazyColumn(
-            modifier = Modifier.padding(padding).fillMaxSize().padding(16.dp),
+    LazyColumn(
+            modifier = modifier.padding().fillMaxSize().padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items(data, key = { it.id }) { list ->
@@ -31,5 +28,5 @@ fun FinalizedListsScreen(
                 }
             }
         }
-    }
+
 }

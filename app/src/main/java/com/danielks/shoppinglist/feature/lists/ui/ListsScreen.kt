@@ -18,20 +18,19 @@ import com.danielks.shoppinglist.feature.lists.component.ListCard
 fun ListsScreen(
     onBack: () -> Unit,
     onOpenList: (String) -> Unit,
-    state: UiState<List<ShoppingList>> = UiState.Success(listOf(PreviewData.active1, PreviewData.active2))
+    state: UiState<List<ShoppingList>> = UiState.Success(listOf(PreviewData.active1, PreviewData.active2)),
+    modifier: Modifier
 ) {
-    Scaffold(
-        topBar = { AppTopBar(title = "Listas Ativas", showBack = true, onBack = onBack) }
-    ) { padding ->
-        when (state) {
-            UiState.Loading -> Box(Modifier.fillMaxSize().padding(padding)) { CircularProgressIndicator() }
+Box() {
+    when (state) {
+            UiState.Loading -> Box(modifier = modifier.fillMaxSize().padding()) { CircularProgressIndicator() }
 
             is UiState.Empty -> EmptyState(
                 title = "Nenhuma lista ativa",
                 message = state.message.ifBlank { "Crie uma nova lista para começar." }
             )
 
-            is UiState.Error -> Text("Erro: ${state.message}", modifier = Modifier.padding(padding))
+            is UiState.Error -> Text("Erro: ${state.message}", modifier = modifier.padding())
 
             is UiState.Success -> {
                 val data = state.data
@@ -39,7 +38,7 @@ fun ListsScreen(
                     EmptyState("Nenhuma lista ativa", "Crie uma nova lista para começar.")
                 } else {
                     LazyColumn(
-                        modifier = Modifier.padding(padding).fillMaxSize().padding(16.dp),
+                        modifier = modifier.padding().fillMaxSize().padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
                         items(data, key = { it.id }) { list ->

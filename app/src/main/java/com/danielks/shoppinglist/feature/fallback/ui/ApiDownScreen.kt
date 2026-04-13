@@ -10,12 +10,10 @@ import com.danielks.shoppinglist.core.designsystem.component.ErrorState
 
 @Composable
 fun ApiDownScreen(
-    onRetry: () -> Unit
+    onRetry: () -> Unit,
+    modifier : Modifier
 ) {
-    Scaffold(
-        topBar = { AppTopBar(title = "Servidor offline", showBack = true, onBack = onRetry) }
-    ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding)) {
+        Box(modifier = modifier.padding()) {
             ErrorState(
                 title = "API indisponível",
                 message = "Não foi possível conectar ao servidor. Tente novamente em instantes.",
@@ -23,5 +21,4 @@ fun ApiDownScreen(
                 onPrimaryAction = onRetry
             )
         }
-    }
 }

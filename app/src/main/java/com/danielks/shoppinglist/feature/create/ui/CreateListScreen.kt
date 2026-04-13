@@ -17,15 +17,13 @@ import com.danielks.shoppinglist.feature.create.component.CreateListForm
 
 @Composable
 fun CreateListScreen(
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    modifier: Modifier
 ) {
     var listName by remember { mutableStateOf("") }
     var items by remember { mutableStateOf(listOf<String>()) }
 
-    Scaffold(
-        topBar = { AppTopBar(title = "Criar Lista", showBack = true, onBack = onBack) }
-    ) { padding ->
-        Column(Modifier.padding(padding).fillMaxSize().padding(16.dp)) {
+        Column(modifier = modifier.fillMaxSize().padding(16.dp)) {
             CreateListForm(
                 listName = listName,
                 onListNameChange = { listName = it },
@@ -37,9 +35,7 @@ fun CreateListScreen(
                     items = items.toMutableList().also { it.removeAt(index) }
                 },
                 onSave = {
-                    // Por enquanto sem lógica. Conectar ao ViewModel / Repository.
                 }
             )
         }
-    }
 }

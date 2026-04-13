@@ -1,5 +1,6 @@
 package com.danielks.shoppinglist.feature.about.ui
 
+import android.R.attr.padding
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,13 +25,11 @@ fun AboutScreen(
     onGoCreate: () -> Unit,
     onGoLists: () -> Unit,
     onGoFinalized: () -> Unit,
-    onGoApiDown: () -> Unit
+    onGoApiDown: () -> Unit,
+    modifier: Modifier
 ) {
-    Scaffold(
-        topBar = { AppTopBar(title = "Sobre / Home") }
-    ) { padding ->
         Column(
-            Modifier.padding(padding).fillMaxSize().padding(16.dp),
+            modifier = modifier.fillMaxSize().padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
@@ -50,5 +49,4 @@ fun AboutScreen(
                 Text("Simular API indisponível (fallback)")
             }
         }
-    }
 }

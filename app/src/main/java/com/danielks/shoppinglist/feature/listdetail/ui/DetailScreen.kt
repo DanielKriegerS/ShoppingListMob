@@ -17,17 +17,15 @@ import com.danielks.shoppinglist.preview.PreviewData
 @Composable
 fun ListDetailScreen(
     listId: String,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    modifier: Modifier
 ) {
-    // Mock local para UI. Depois isso vira estado vindo de ViewModel.
+
     var items by remember { mutableStateOf(PreviewData.active1.items) }
     val listName = remember { PreviewData.active1.name }
     val checkedCount = items.count { it.checked }
 
-    Scaffold(
-        topBar = { AppTopBar(title = "Editar Lista", showBack = true, onBack = onBack) }
-    ) { padding ->
-        Column(Modifier.padding(padding).fillMaxSize()) {
+        Column(modifier = modifier.padding().fillMaxSize()) {
 
             ListHeader(
                 name = listName,
@@ -74,5 +72,5 @@ fun ListDetailScreen(
                 }
             }
         }
-    }
+
 }

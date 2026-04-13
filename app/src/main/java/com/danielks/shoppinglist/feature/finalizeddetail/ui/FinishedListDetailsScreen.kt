@@ -16,15 +16,13 @@ import com.danielks.shoppinglist.preview.PreviewData
 @Composable
 fun FinalizedListDetailScreen(
     listId: String,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    modifier: Modifier
 ) {
     val list = PreviewData.finalized1
     val checkedCount = list.items.count { it.checked }
 
-    Scaffold(
-        topBar = { AppTopBar(title = "Lista Finalizada", showBack = true, onBack = onBack) }
-    ) { padding ->
-        Column(Modifier.padding(padding).fillMaxSize()) {
+        Column(modifier = modifier.padding().fillMaxSize()) {
             ListHeader(name = list.name, itemsCount = list.items.size, checkedCount = checkedCount)
 
             Divider()
@@ -39,7 +37,6 @@ fun FinalizedListDetailScreen(
                 }
             }
         }
-    }
 }
 
 @Composable

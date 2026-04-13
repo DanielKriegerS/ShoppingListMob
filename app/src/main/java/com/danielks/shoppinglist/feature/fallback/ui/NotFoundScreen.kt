@@ -11,17 +11,14 @@ import com.danielks.shoppinglist.core.designsystem.component.PrimaryButton
 
 @Composable
 fun NotFoundScreen(
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    modifier: Modifier
 ) {
-    Scaffold(
-        topBar = { AppTopBar(title = "Não encontrado", showBack = true, onBack = onBack) }
-    ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding)) {
+        Box(modifier = modifier.padding()) {
             EmptyState(
                 title = "Lista não encontrada",
                 message = "A lista que você tentou abrir não existe ou foi removida.",
                 action = { PrimaryButton(text = "Voltar", onClick = onBack) }
             )
         }
-    }
 }
