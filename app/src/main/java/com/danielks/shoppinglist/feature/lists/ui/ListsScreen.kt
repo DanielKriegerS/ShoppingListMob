@@ -1,6 +1,5 @@
 package com.danielks.shoppinglist.feature.lists.ui
 
-import com.danielks.shoppinglist.core.designsystem.component.AppTopBar
 import com.danielks.shoppinglist.core.designsystem.component.EmptyState
 import com.danielks.shoppinglist.core.ui.UiState
 import com.danielks.shoppinglist.model.ShoppingList

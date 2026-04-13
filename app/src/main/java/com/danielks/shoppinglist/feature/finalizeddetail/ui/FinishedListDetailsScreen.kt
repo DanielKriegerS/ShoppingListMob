@@ -4,11 +4,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.danielks.shoppinglist.core.designsystem.component.AppTopBar
 import com.danielks.shoppinglist.feature.listdetail.component.ListHeader
 import com.danielks.shoppinglist.model.ShoppingItem
 import com.danielks.shoppinglist.preview.PreviewData

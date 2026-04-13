@@ -1,5 +1,8 @@
 package com.danielks.shoppinglist.navigation
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -23,13 +26,17 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.*
 import kotlinx.coroutines.launch
 import com.danielks.shoppinglist.core.designsystem.component.AppTopBar
+import com.danielks.shoppinglist.core.designsystem.component.ThemeModeSection
+import com.danielks.shoppinglist.core.settings.ThemeMode
 import com.danielks.shoppinglist.core.ui.UiState
 import com.danielks.shoppinglist.preview.PreviewData
 
 @Composable
 fun AppRoot(
-    navController: NavHostController = rememberNavController()
-) {
+    navController: NavHostController = rememberNavController(),
+    themeMode: ThemeMode,
+    onThemeModeChange: (ThemeMode) -> Unit,
+    ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -74,7 +81,6 @@ fun AppRoot(
                         onClick = {
                             scope.launch { drawerState.close() }
                             navController.navigate(item.route) {
-                                // Mantém backstack limpo para top-level
                                 popUpTo(Destinations.ABOUT) { saveState = true }
                                 launchSingleTop = true
                                 restoreState = true
@@ -83,6 +89,15 @@ fun AppRoot(
                         modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                     )
                 }
+
+
+                Divider(Modifier.padding(vertical = 8.dp))
+
+
+                ThemeModeSection(
+                    current = themeMode,
+                    onChange = onThemeModeChange
+                )
             }
         }
     ) {
