@@ -27,6 +27,7 @@ import androidx.navigation.compose.*
 import kotlinx.coroutines.launch
 import com.danielks.shoppinglist.core.designsystem.component.AppTopBar
 import com.danielks.shoppinglist.core.designsystem.component.ThemeModeSection
+import com.danielks.shoppinglist.core.designsystem.component.TitleRow
 import com.danielks.shoppinglist.core.settings.ThemeMode
 import com.danielks.shoppinglist.core.ui.UiState
 import com.danielks.shoppinglist.preview.PreviewData
@@ -67,12 +68,7 @@ fun AppRoot(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
-                Text(
-                    text = "ShoppingList",
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(16.dp)
-                )
-
+                TitleRow("Shopping List")
                 drawerItems.forEach { item ->
                     NavigationDrawerItem(
                         label = { Text(item.label) },
