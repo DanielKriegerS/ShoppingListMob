@@ -36,7 +36,6 @@ fun AppRoot(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    // Defina quais rotas são "top-level": exibem hamburger
     val topLevelRoutes = remember {
         setOf(
             Destinations.ABOUT,
@@ -101,10 +100,6 @@ fun AppRoot(
                 )
             }
         ) { innerPadding ->
-
-            // Se for top-level, o ideal é mostrar hamburguer na TopBar.
-            // Seu AppTopBar hoje só tem "back". Vamos ajustar abaixo (item 3).
-
             NavHost(
                 navController = navController,
                 startDestination = Destinations.ABOUT,
@@ -112,11 +107,6 @@ fun AppRoot(
             ) {
                 composable(Destinations.ABOUT) {
                     AboutScreen(
-                        // Você pode manter ou remover botões
-                        onGoCreate = { navController.navigate(Destinations.CREATE_LIST) },
-                        onGoLists = { navController.navigate(Destinations.LISTS) },
-                        onGoFinalized = { navController.navigate(Destinations.FINALIZED_LISTS) },
-                        onGoApiDown = { navController.navigate(Destinations.API_DOWN) },
                         modifier = Modifier
                     )
                 }
