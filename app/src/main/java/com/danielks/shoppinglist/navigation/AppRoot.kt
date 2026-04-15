@@ -1,8 +1,5 @@
 package com.danielks.shoppinglist.navigation
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -24,6 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.*
+import com.danielks.shoppinglist.core.appinfo.AppInfo
+import com.danielks.shoppinglist.core.designsystem.component.AppFooter
 import kotlinx.coroutines.launch
 import com.danielks.shoppinglist.core.designsystem.component.AppTopBar
 import com.danielks.shoppinglist.core.designsystem.component.ThemeModeSection
@@ -37,6 +36,7 @@ fun AppRoot(
     navController: NavHostController = rememberNavController(),
     themeMode: ThemeMode,
     onThemeModeChange: (ThemeMode) -> Unit,
+    appInfo: AppInfo
     ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -63,6 +63,7 @@ fun AppRoot(
         Destinations.NOT_FOUND -> "Não encontrado"
         else -> "Detalhe"
     }
+    val showFooter = shouldShowFooter(currentRoute)
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -97,6 +98,8 @@ fun AppRoot(
             }
         }
     ) {
+
+
         Scaffold(
             topBar = {
                 AppTopBar(
@@ -107,10 +110,18 @@ fun AppRoot(
                     },
                     showMenu = isTopLevel,
                     onMenuClick = { scope.launch { drawerState.open() } }
-
                 )
+            },
+            bottomBar = {
+                if (showFooter) {
+                    AppFooter(
+                        appName = appInfo.appName,
+                        versionName = appInfo.versionName,
+                        credits = appInfo.credits
+                    )
+                }
             }
-        ) { innerPadding ->
+                ) { innerPadding ->
             NavHost(
                 navController = navController,
                 startDestination = Destinations.ABOUT,
@@ -204,4 +215,17 @@ fun AppRoot(
             }
         }
     }
+}
+
+private fun shouldShowFooter(route: String?): Boolean {
+    if (route == null) return true
+
+    if (route == Destinations.ABOUT) return false
+    if (route == Destinations.API_DOWN) return false
+    if (route == Destinations.NOT_FOUND) return false
+
+    if (route.startsWith("list_detail/")) return false
+    if (route.startsWith("finalized_list_detail/")) return false
+
+    return true
 }
