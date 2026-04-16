@@ -1,41 +1,31 @@
 package com.danielks.shoppinglist.feature.create.ui
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.danielks.shoppinglist.core.designsystem.component.AppTopBar
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.danielks.shoppinglist.feature.create.component.CreateListForm
-
 
 @Composable
 fun CreateListScreen(
     onBack: () -> Unit,
-    modifier: Modifier
+    modifier: Modifier = Modifier,
+    viewModel: CreateListViewModel = viewModel()
 ) {
-    var listName by remember { mutableStateOf("") }
-    var items by remember { mutableStateOf(listOf<String>()) }
+    val uiState by viewModel.uiState.collectAsState()
 
-        Column(modifier = modifier.fillMaxSize().padding(16.dp)) {
-            CreateListForm(
-                listName = listName,
-                onListNameChange = { listName = it },
-                items = items,
-                onAddItem = { name ->
-                    if (name.isNotBlank()) items = items + name.trim()
-                },
-                onRemoveItem = { index ->
-                    items = items.toMutableList().also { it.removeAt(index) }
-                },
-                onSave = {
-                }
-            )
-        }
+    CreateListForm(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        state = uiState,
+        onListNameChange = viewModel::onListNameChange,
+        onAddItem = viewModel::onAddItem,
+        onRemoveItem = viewModel::onRemoveItem,
+        onSave = viewModel::onSave
+    )
 }
