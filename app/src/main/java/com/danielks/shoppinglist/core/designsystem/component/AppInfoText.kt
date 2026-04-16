@@ -24,7 +24,7 @@ fun InfoText(
     }
 
     Row(modifier = modifier
-        .padding(bottom = 8.dp)
+        .padding(5.dp)
     ) {
     Text(
         text = text,
