@@ -10,9 +10,10 @@ import androidx.compose.ui.Modifier
 fun PrimaryButton(
     text: String,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    enabled: Boolean = true
 ) {
-    Button(modifier = modifier, onClick = onClick) {
+    Button(modifier = modifier, onClick = onClick, enabled = enabled) {
         Text(text)
     }
 }
