@@ -1,6 +1,7 @@
 package com.danielks.shoppinglist.feature.create.component
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,75 +28,87 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.danielks.shoppinglist.core.designsystem.component.PrimaryButton
-
+import com.danielks.shoppinglist.feature.create.ui.CreateListUiState
 
 @Composable
 fun CreateListForm(
-    listName: String,
+    state: CreateListUiState,
+    modifier: Modifier = Modifier,
     onListNameChange: (String) -> Unit,
-    items: List<String>,
     onAddItem: (String) -> Unit,
     onRemoveItem: (Int) -> Unit,
     onSave: () -> Unit
 ) {
     var newItem by remember { mutableStateOf("") }
 
-    OutlinedTextField(
-        value = listName,
-        onValueChange = onListNameChange,
-        label = { Text("Nome da lista") },
-        modifier = Modifier.fillMaxWidth()
-    )
-
-    Spacer(Modifier.height(12.dp))
-
-    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+    Column(modifier) {
         OutlinedTextField(
-            value = newItem,
-            onValueChange = { newItem = it },
-            label = { Text("Adicionar item") },
-            modifier = Modifier.weight(1f)
+            value = state.listName,
+            onValueChange = onListNameChange,
+            label = { Text("Nome da lista") },
+            modifier = Modifier.fillMaxWidth()
         )
-        Spacer(Modifier.width(8.dp))
-        Button(onClick = { onAddItem(newItem); newItem = "" }) {
-            Text("Add")
-        }
-    }
 
-    Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(12.dp))
 
-    Text("Itens", style = MaterialTheme.typography.titleSmall)
-    Spacer(Modifier.height(8.dp))
-
-    if (items.isEmpty()) {
-        Text("Nenhum item adicionado ainda.", style = MaterialTheme.typography.bodyMedium)
-    } else {
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(6.dp)
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            itemsIndexed(items) { index, item ->
-                ElevatedCard {
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(12.dp)
-                            .weight(1f),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(item, modifier = Modifier.weight(1f))
-                        IconButton(onClick = { onRemoveItem(index) }) {
-                            Icon(Icons.Outlined.Delete, contentDescription = "Remover")
+            OutlinedTextField(
+                value = newItem,
+                onValueChange = { newItem = it },
+                label = { Text("Adicionar item") },
+                modifier = Modifier.weight(1f)
+            )
+            Spacer(Modifier.width(8.dp))
+            Button(
+                onClick = {
+                    onAddItem(newItem)
+                    newItem = ""
+                }
+            ) {
+                Text("Add")
+            }
+        }
+
+        Spacer(Modifier.height(12.dp))
+
+        Text("Itens", style = MaterialTheme.typography.titleSmall)
+        Spacer(Modifier.height(8.dp))
+
+        if (state.items.isEmpty()) {
+            Text("Nenhum item adicionado ainda.")
+        } else {
+            LazyColumn(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                itemsIndexed(state.items) { index, item ->
+                    ElevatedCard {
+                        Row(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(text = item, modifier = Modifier.weight(1f))
+                            IconButton(onClick = { onRemoveItem(index) }) {
+                                Icon(
+                                    Icons.Outlined.Delete,
+                                    contentDescription = "Remover"
+                                )
+                            }
                         }
                     }
                 }
             }
         }
-    }
 
-    Spacer(Modifier.height(12.dp))
-    PrimaryButton(
-        text = "Salvar lista",
-        modifier = Modifier.fillMaxWidth(),
-        onClick = onSave
-    )
+        Spacer(Modifier.height(12.dp))
+
+        PrimaryButton(
+            text = "Salvar lista",
+            modifier = Modifier.fillMaxWidth(),
+            onClick = onSave,
+            enabled = state.canSave && !state.isSaving
+        )
+    }
 }
