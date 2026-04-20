@@ -13,7 +13,7 @@ import com.danielks.shoppinglist.feature.fallback.ui.ApiDownScreen
 import com.danielks.shoppinglist.feature.fallback.ui.NotFoundScreen
 import com.danielks.shoppinglist.feature.finalized.ui.FinalizedListsScreen
 import com.danielks.shoppinglist.feature.finalizeddetail.ui.FinalizedListDetailScreen
-import com.danielks.shoppinglist.feature.listdetail.ui.ListDetailScreen
+import com.danielks.shoppinglist.feature.listdetail.ui.DetailScreen
 import com.danielks.shoppinglist.feature.lists.ui.ListsScreen
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -174,7 +174,7 @@ fun AppRoot(
                             modifier = Modifier
                         )
                     } else {
-                        ListDetailScreen(
+                        DetailScreen(
                             listId = listId, onBack = { navController.popBackStack() },
                             modifier = Modifier
                         )

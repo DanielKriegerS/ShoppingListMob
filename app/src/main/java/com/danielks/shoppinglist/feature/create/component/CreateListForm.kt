@@ -104,11 +104,17 @@ fun CreateListForm(
 
         Spacer(Modifier.height(12.dp))
 
-        PrimaryButton(
-            text = "Salvar lista",
-            modifier = Modifier.fillMaxWidth(),
-            onClick = onSave,
-            enabled = state.canSave && !state.isSaving
-        )
+        Row (
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp),
+            horizontalArrangement = Arrangement.Center
+        ){
+            PrimaryButton(
+                text = "Salvar lista",
+                onClick = onSave,
+                enabled = state.canSave && !state.isSaving
+            )
+        }
     }
 }
