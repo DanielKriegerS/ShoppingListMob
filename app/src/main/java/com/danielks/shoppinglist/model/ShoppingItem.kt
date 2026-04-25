@@ -7,7 +7,7 @@ data class ShoppingItem(
     val name: String,
     val quantity: Int = 1,
     val checked: Boolean = false,
-    val value: Double? = null
+    val valueCents: Long = 0L
 ) {
-    fun total(): Double = (value ?: 0.0) * quantity
+    fun total(): Long = valueCents * quantity
 }

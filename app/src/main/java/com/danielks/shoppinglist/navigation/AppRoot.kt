@@ -1,12 +1,22 @@
 package com.danielks.shoppinglist.navigation
 
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.*
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.danielks.shoppinglist.core.appinfo.AppInfo
+import com.danielks.shoppinglist.core.designsystem.component.AppFooter
+import com.danielks.shoppinglist.core.designsystem.component.AppTopBar
+import com.danielks.shoppinglist.core.designsystem.component.ThemeModeSection
+import com.danielks.shoppinglist.core.designsystem.component.TitleRow
+import com.danielks.shoppinglist.core.settings.ThemeMode
+import com.danielks.shoppinglist.core.ui.UiState
 import com.danielks.shoppinglist.feature.about.ui.AboutScreen
 import com.danielks.shoppinglist.feature.create.ui.CreateListScreen
 import com.danielks.shoppinglist.feature.fallback.ui.ApiDownScreen
@@ -15,21 +25,8 @@ import com.danielks.shoppinglist.feature.finalized.ui.FinalizedListsScreen
 import com.danielks.shoppinglist.feature.finalizeddetail.ui.FinalizedListDetailScreen
 import com.danielks.shoppinglist.feature.listdetail.ui.DetailScreen
 import com.danielks.shoppinglist.feature.lists.ui.ListsScreen
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.*
-import com.danielks.shoppinglist.core.appinfo.AppInfo
-import com.danielks.shoppinglist.core.designsystem.component.AppFooter
-import kotlinx.coroutines.launch
-import com.danielks.shoppinglist.core.designsystem.component.AppTopBar
-import com.danielks.shoppinglist.core.designsystem.component.ThemeModeSection
-import com.danielks.shoppinglist.core.designsystem.component.TitleRow
-import com.danielks.shoppinglist.core.settings.ThemeMode
-import com.danielks.shoppinglist.core.ui.UiState
 import com.danielks.shoppinglist.preview.PreviewData
+import kotlinx.coroutines.launch
 
 @Composable
 fun AppRoot(

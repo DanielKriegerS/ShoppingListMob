@@ -9,7 +9,6 @@ data class ShoppingList(
     val status: ListStatus = ListStatus.ACTIVE,
     val createdAt: Long = System.currentTimeMillis()
 ) {
-    val totalValue: Double
+    val totalValue: Long
     get() = items.sumOf { it.total() }
-
 }

@@ -3,10 +3,9 @@ package com.danielks.shoppinglist.core.util
 import java.text.NumberFormat
 import java.util.Locale
 
+private val brl = NumberFormat.getCurrencyInstance(Locale("pt", "BR"))
+
+fun formatBRLFromCents(cents: Long): String =
+    brl.format(cents / 100.0)
 
 
-private val ptBr = Locale("pt", "BR")
-private val brl = NumberFormat.getCurrencyInstance(ptBr)
-
-fun formatBRL(value: Double?): String =
-    value?.let { brl.format(it) } ?: "—"

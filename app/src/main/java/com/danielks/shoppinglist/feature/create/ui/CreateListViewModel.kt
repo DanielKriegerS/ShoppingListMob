@@ -54,8 +54,7 @@ class CreateListViewModel(
         val state = _uiState.value
         if (!state.canSave) return
 
-        // 🔜 Aqui entra API / Repository
-        val newList = ShoppingList(
+        ShoppingList(
             id = UUID.randomUUID().toString(),
             name = state.listName,
             items = state.items.map {
@@ -68,8 +67,6 @@ class CreateListViewModel(
             },
             status = ListStatus.ACTIVE
         )
-
-        // repository.createList(newList)
     }
 
     private fun canSave(name: String, items: List<String>): Boolean {

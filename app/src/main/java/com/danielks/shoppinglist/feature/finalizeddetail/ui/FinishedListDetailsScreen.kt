@@ -11,9 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.danielks.shoppinglist.core.util.formatBRL
-import com.danielks.shoppinglist.core.util.subtotal
-import com.danielks.shoppinglist.core.util.total
+import com.danielks.shoppinglist.core.util.formatBRLFromCents
+import com.danielks.shoppinglist.core.util.subtotalCents
 import com.danielks.shoppinglist.feature.listdetail.component.ListHeader
 import com.danielks.shoppinglist.model.ShoppingItem
 import com.danielks.shoppinglist.preview.PreviewData
@@ -25,7 +24,7 @@ fun FinalizedListDetailScreen(
     modifier: Modifier
 ) {
     val list = PreviewData.finalized1
-    val totalValue = list.total()
+    val totalValue = list.totalValue
 
     Column(modifier = modifier.fillMaxSize()) {
 
@@ -33,9 +32,9 @@ fun FinalizedListDetailScreen(
             name = list.name,
             itemsCount = list.items.size,
             checkedCount = 0,
-            totalValue = totalValue,
+            totalCents = totalValue,
             isFinished = true,
-            checkedTotalValue = null
+            checkedTotalCents = null
         )
 
         Divider()
@@ -63,14 +62,14 @@ private fun ReadonlyItemRow(item: ShoppingItem) {
             Column {
                 Text("${item.quantity}x ${item.name}", style = MaterialTheme.typography.bodyLarge)
                 Text(
-                    "Unit: ${formatBRL(item.value)}",
+                    "Unit: ${formatBRLFromCents(item.valueCents)}",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
             Text(
-                formatBRL(item.subtotal()),
+                formatBRLFromCents(item.subtotalCents()),
                 style = MaterialTheme.typography.titleSmall
             )
         }

@@ -6,7 +6,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.danielks.shoppinglist.core.util.total
 import com.danielks.shoppinglist.model.ShoppingList
 
 @Composable
@@ -14,7 +13,7 @@ fun ListCard(
     list: ShoppingList,
     onClick: () -> Unit
 ) {
-    val total = list.total()
+    val total = list.totalValue
 
     ElevatedCard(
         modifier = Modifier
@@ -28,7 +27,7 @@ fun ListCard(
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text("${list.items.size} itens", style = MaterialTheme.typography.bodyMedium)
                 Text(
-                    com.danielks.shoppinglist.core.util.formatBRL(total),
+                    com.danielks.shoppinglist.core.util.formatBRLFromCents(total),
                     style = MaterialTheme.typography.bodyMedium
                 )
             }

@@ -1,12 +1,18 @@
 package com.danielks.shoppinglist.core.util
 
 import com.danielks.shoppinglist.model.ShoppingItem
-import com.danielks.shoppinglist.model.ShoppingList
+import kotlin.collections.filter
+import kotlin.collections.sumOf
+import kotlin.sequences.sumOf
+import kotlin.text.sumOf
 
-fun ShoppingItem.subtotal(): Double = (value ?: 0.0) * quantity
 
-fun ShoppingList.total(): Double = items.sumOf { it.subtotal() }
+fun ShoppingItem.subtotalCents(): Long =
+valueCents * quantity
 
-fun ShoppingList.checkedTotal(): Double =
-    items.filter { it.checked }.sumOf { it.subtotal() }
+fun List<ShoppingItem>.totalCents(): Long =
+    sumOf { it.subtotalCents() }
+
+fun List<ShoppingItem>.checkedTotalCents(): Long =
+    filter { it.checked }.sumOf { it.subtotalCents() }
 

@@ -10,16 +10,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.danielks.shoppinglist.core.util.formatBRL
-import com.danielks.shoppinglist.model.ListStatus
+import com.danielks.shoppinglist.core.util.formatBRLFromCents
 
 @Composable
 fun ListHeader(
     name: String,
     itemsCount: Int,
     checkedCount: Int,
-    totalValue: Double,
-    checkedTotalValue: Double? = null,
+    totalCents: Long,
+    checkedTotalCents: Long? = null,
     isFinished: Boolean
 ) {
     var itemsHeaderTextLine by remember { mutableStateOf("") }
@@ -42,13 +41,13 @@ fun ListHeader(
         Spacer(Modifier.height(8.dp))
 
         Text(
-            "Total: ${formatBRL(totalValue)}",
+            "Total: ${formatBRLFromCents(totalCents)}",
             style = MaterialTheme.typography.titleMedium
         )
 
-        if (checkedTotalValue != null) {
+        if (checkedTotalCents != null) {
             Text(
-                "Marcados: ${formatBRL(checkedTotalValue)}",
+                "Marcados: ${formatBRLFromCents(checkedTotalCents)}",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

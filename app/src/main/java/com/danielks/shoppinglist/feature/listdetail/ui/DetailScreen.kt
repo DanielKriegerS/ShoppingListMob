@@ -7,11 +7,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.danielks.shoppinglist.core.util.subtotal
+import com.danielks.shoppinglist.core.designsystem.component.PrimaryButton
+import com.danielks.shoppinglist.core.util.checkedTotalCents
+import com.danielks.shoppinglist.core.util.totalCents
 import com.danielks.shoppinglist.feature.listdetail.component.AddItemBar
 import com.danielks.shoppinglist.feature.listdetail.component.ListHeader
 import com.danielks.shoppinglist.feature.listdetail.component.ListItemRow
 import com.danielks.shoppinglist.model.ShoppingItem
+import com.danielks.shoppinglist.model.canFinalize
 import com.danielks.shoppinglist.preview.PreviewData
 
 @Composable
@@ -23,19 +26,20 @@ fun DetailScreen(
     var items by remember { mutableStateOf(PreviewData.active1.items) }
     val listName = remember { PreviewData.active1.name }
     val checkedCount = items.count { it.checked }
-    val totalValue = items.sumOf { it.subtotal() }
-    val checkedTotalValue = items.filter { it.checked }.sumOf { it.subtotal() }
+    val totalCents = items.totalCents()
+    val checkedTotalCents = items.checkedTotalCents()
 
+    val canFinalize by remember(items) { derivedStateOf { items.canFinalize() } }
 
-    Column(modifier = modifier.padding().fillMaxSize()) {
+        Column(modifier = modifier.padding().fillMaxSize()) {
 
             ListHeader(
                 name = listName,
                 itemsCount = items.size,
                 checkedCount = checkedCount,
-                totalValue = totalValue,
+                totalCents = totalCents,
                 isFinished = false,
-                checkedTotalValue = checkedTotalValue
+                checkedTotalCents = checkedTotalCents
             )
 
             AddItemBar(
@@ -53,7 +57,7 @@ fun DetailScreen(
             Divider()
 
             LazyColumn(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.weight(1f),
                 contentPadding = PaddingValues(12.dp),
                 verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
@@ -73,13 +77,50 @@ fun DetailScreen(
                         onRemove = {
                             items = items.filterNot { it.id == item.id }
                         },
-                        onChangeValue = { newValue ->
+                        onChangeValueCents = { newCents ->
                             items = items.map {
-                                if (it.id == item.id) it.copy(value = newValue) else it
+                                if (it.id == item.id) it.copy(valueCents = newCents) else it
+                            }
+                        },
+                        onChangeName = { newName ->
+                            items = items.map {
+                                if (it.id == item.id) it.copy(name = newName) else it
                             }
                         }
                     )
                 }
             }
-        }
+
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
+                    .imePadding()
+            ) {
+                if (!canFinalize) {
+                    val msg = when {
+                        items.isEmpty() -> "Adicione itens para finalizar."
+                        items.any { it.name.isBlank() } -> "Preencha o nome de todos os itens."
+                        items.any { !it.checked } -> "Marque todos os itens."
+                        items.any { it.valueCents <= 0L } -> "Preencha o valor de todos os itens."
+                        else -> "Complete todos os itens para finalizar."
+                    }
+
+                    Text(
+                        msg,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(Modifier.height(6.dp))
+                }
+
+                PrimaryButton(
+                    text = "Finalizar",
+                    onClick = { },
+                    enabled = canFinalize,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+    }
 }
