@@ -15,7 +15,7 @@ import com.danielks.shoppinglist.core.designsystem.component.InlineEditableMoney
 import com.danielks.shoppinglist.core.designsystem.component.InlineEditableName
 import com.danielks.shoppinglist.core.util.formatBRLFromCents
 import com.danielks.shoppinglist.core.util.subtotalCents
-import com.danielks.shoppinglist.model.ShoppingItem
+import com.danielks.shoppinglist.domain.model.ShoppingItem
 
 @Composable
 fun ListItemRow(

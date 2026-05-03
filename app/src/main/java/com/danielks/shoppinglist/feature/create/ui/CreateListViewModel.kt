@@ -1,20 +1,25 @@
 package com.danielks.shoppinglist.feature.create.ui
 
 import androidx.lifecycle.ViewModel
-import com.danielks.shoppinglist.model.ListStatus
-import com.danielks.shoppinglist.model.ShoppingItem
-import com.danielks.shoppinglist.model.ShoppingList
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import java.util.UUID
+import androidx.lifecycle.viewModelScope
+import com.danielks.shoppinglist.di.Graph
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
-class CreateListViewModel(
-) : ViewModel() {
+class CreateListViewModel : ViewModel() {
+
+    private val repo = Graph.repository
 
     private val _uiState = MutableStateFlow(CreateListUiState())
     val uiState: StateFlow<CreateListUiState> = _uiState.asStateFlow()
+
+    private val _events = MutableSharedFlow<Event>()
+    val events = _events.asSharedFlow()
+
+    sealed interface Event {
+        data class Saved(val listId: String) : Event
+        data class Error(val message: String) : Event
+    }
 
     fun onListNameChange(name: String) {
         _uiState.update {
@@ -41,7 +46,7 @@ class CreateListViewModel(
     fun onRemoveItem(index: Int) {
         _uiState.update {
             val newItems = it.items.toMutableList().also { list ->
-                list.removeAt(index)
+                if (index in list.indices) list.removeAt(index)
             }
             it.copy(
                 items = newItems,
@@ -52,21 +57,24 @@ class CreateListViewModel(
 
     fun onSave() {
         val state = _uiState.value
-        if (!state.canSave) return
+        if (!state.canSave || state.isSaving) return
 
-        ShoppingList(
-            id = UUID.randomUUID().toString(),
-            name = state.listName,
-            items = state.items.map {
-                ShoppingItem(
-                    id = UUID.randomUUID().toString(),
-                    name = it,
-                    quantity = 1,
-                    checked = false
-                )
-            },
-            status = ListStatus.ACTIVE
-        )
+        val name = state.listName.trim()
+        val items = state.items.map { it.trim() }.filter { it.isNotBlank() }
+
+        viewModelScope.launch {
+            _uiState.update { it.copy(isSaving = true) }
+
+            runCatching {
+                repo.createList(name = name, initialItems = items)
+            }.onSuccess { listId ->
+                _uiState.value = CreateListUiState() // limpa a tela
+                _events.emit(Event.Saved(listId))
+            }.onFailure { e ->
+                _uiState.update { it.copy(isSaving = false) }
+                _events.emit(Event.Error(e.message ?: "Erro ao salvar lista."))
+            }
+        }
     }
 
     private fun canSave(name: String, items: List<String>): Boolean {

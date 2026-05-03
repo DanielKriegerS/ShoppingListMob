@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.danielks.shoppinglist.core.util.formatBRLFromCents
-import com.danielks.shoppinglist.model.ShoppingList
+import com.danielks.shoppinglist.domain.model.ShoppingList
 
 @Composable
 fun FinalizedListCard(

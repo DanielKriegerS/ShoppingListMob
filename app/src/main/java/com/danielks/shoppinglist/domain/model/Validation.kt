@@ -1,4 +1,4 @@
-package com.danielks.shoppinglist.model
+package com.danielks.shoppinglist.domain.model
 
 fun ShoppingItem.isReadyToFinalize(): Boolean =
     name.isNotBlank() && checked && valueCents > 0L

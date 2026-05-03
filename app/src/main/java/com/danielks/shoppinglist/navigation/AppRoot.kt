@@ -139,24 +139,24 @@ fun AppRoot(
 
                 composable(Destinations.LISTS) {
                     ListsScreen(
-                        onBack = { navController.popBackStack() },
                         onOpenList = { id -> navController.navigate(Destinations.listDetail(id)) },
-                        state = UiState.Success(listOf(PreviewData.active1, PreviewData.active2)),
-                        modifier = Modifier
-                    )
+                        )
                 }
 
                 composable(Destinations.FINALIZED_LISTS) {
                     FinalizedListsScreen(
-                        onBack = { navController.popBackStack() },
-                        onOpenList = { id ->
-                            navController.navigate(
-                                Destinations.finalizedListDetail(
-                                    id
-                                )
-                            )
-                        },
-                        modifier = Modifier
+                        onOpenList = { id -> navController.navigate(Destinations.finalizedListDetail(id)) }
+                    )
+                }
+
+                composable(
+                    route = Destinations.FINALIZED_LIST_DETAIL,
+                    arguments = listOf(navArgument("listId") { type = NavType.StringType })
+                ) { entry ->
+                    val id = entry.arguments?.getString("listId").orEmpty()
+                    FinalizedListDetailScreen(
+                        listId = id,
+                        onBack = { navController.popBackStack() }
                     )
                 }
 
@@ -178,23 +178,6 @@ fun AppRoot(
                     }
                 }
 
-                composable(
-                    route = Destinations.FINALIZED_LIST_DETAIL,
-                    arguments = listOf(navArgument("listId") { type = NavType.StringType })
-                ) { entry ->
-                    val listId = entry.arguments?.getString("listId").orEmpty()
-                    if (listId.isBlank()) {
-                        NotFoundScreen(
-                            onBack = { navController.popBackStack() },
-                            modifier = Modifier
-                        )
-                    } else {
-                        FinalizedListDetailScreen(
-                            listId = listId, onBack = { navController.popBackStack() },
-                            modifier = Modifier
-                        )
-                    }
-                }
 
                 composable(Destinations.NOT_FOUND) {
                     NotFoundScreen(
